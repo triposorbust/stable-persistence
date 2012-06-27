@@ -1,4 +1,4 @@
-This Line Should Be Thrown Away
+#
 ZZ 1.1
 ZZ 1.1 2.2
 ZZ 1.1 2.2 3.3

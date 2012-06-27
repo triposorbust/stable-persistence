@@ -23,6 +23,10 @@ class SeriesIteratorTest(unittest.TestCase):
         else:
             self.assertEqual(counter, 12)
     
+    def test_parse_pattern(self):
+        self.iterator.parse_pattern("# A A A B B C C C C D E")
+        self.assertEqual(self.iterator.pattern, (3,4,2,1,1))
+    
     def tearDown(self):
         pass
 
