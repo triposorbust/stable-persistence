@@ -126,18 +126,24 @@ class State:
         else:
             raise Exception
         
+        s = set([])
+        s.update(intA.values)
+        s.update(intB.values)
+        
         self.pairs.append( (pmin, pmax) )
-        return Interval(birth, left, right, self.ring)
+        return Interval(birth, left, right, self.ring, s)
 
 class Interval:
     
-    def __init__(self, birth, left, right, ring):
+    def __init__(self, birth, left, right, ring, values = None):
         self.birth = birth
         self.left = left
         self.right = right
         self.ring = ring
-        self.values = set([left, right])
-        self.values |= set(ring.between(left, right))
+        if values:
+            self.values = values
+        else:
+            self.values = set([left, right])
     
     def is_adjacent_to(self, value):
         on_right = self._has_on_right(value)
@@ -192,25 +198,7 @@ class Ring:
                 index += 1
             return self.data[index]
         else:
-            return None
-    
-    def between(self, left, right):
-        if not (left in self.data and right in self.data):
-            raise Exception("invalid interval on ring")
-        
-        values = []
-        trace = left
-        
-        while left != right:
-            
-            trace = self.right_of(trace)
-            values.append(trace)
-            
-            # prevent writing right bound to list
-            if self.left_of(right) == trace:
-                break
-        
-        return values
+            return None   
     
     def is_max(self, value):
         if value == self.gmax:

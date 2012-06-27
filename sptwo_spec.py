@@ -170,10 +170,6 @@ class MockRing:
         return value - 3
     def right_of(self, value):
         return value + 3
-    def between(self, left, right):
-        big = max(left, right)
-        small = min(left, right)
-        return range(small + 1, big)
 
 class IntervalTest(unittest.TestCase):
     
@@ -224,7 +220,6 @@ class IntervalTest(unittest.TestCase):
         self.assertFalse(self.small.contains(1))
         
         self.assertTrue(self.large.contains(3))
-        self.assertTrue(self.large.contains(5))
         self.assertFalse(self.large.contains(10))
     
     def tearDown(self):
@@ -250,13 +245,7 @@ class RingTest(unittest.TestCase):
         self.assertEqual(self.flat.right_of(-1), None)
         self.assertEqual(self.flat.right_of(1), 2)
         self.assertEqual(self.flat.right_of(TEST_N - 1), 0)
-    
-    def test_between(self):
-        self.assertEqual(self.flat.between(0, 0), [])
-        self.assertEqual(self.crests.between(2, 2), [])
-        self.assertEqual(self.flat.between(3, 5), [4])
-        self.assertEqual(self.crests.between(2, -7), [-3,4,-5,6])
-    
+        
     def test_is_max(self):
         self.assertTrue(self.flat.is_max(11))
         self.assertFalse(self.flat.is_max(10))
