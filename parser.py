@@ -26,13 +26,27 @@ class SeriesIterator:
     def __iter__(self):
         return self
     
+    def pattern_series(self, unpatterned):
+        if not self.pattern:
+            return unpatterned
+        elif len(unpatterned) != sum(self.pattern):
+            raise Exception("poorly patterned data series")
+        patterned = []
+        for n in self.pattern:
+            values = unpatterned[0:n] # average replicates
+            del unpatterned[0:n]
+            patterned.append(float(sum(values)) / float(n))
+        return patterned
+    
     def next(self):
         str = self._file.readline()
         if not str:
             raise StopIteration
         words = string.split(str)
+        unpatterned = map(float, words[1:])
+        
         series_name = words[0]
-        series_data = map(float, words[1:])
+        series_data = self.pattern_series(unpatterned)
         return (series_name, series_data)
 
 

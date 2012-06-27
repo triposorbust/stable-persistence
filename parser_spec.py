@@ -26,6 +26,24 @@ class SeriesIteratorTest(unittest.TestCase):
     def test_parse_pattern(self):
         self.iterator.parse_pattern("# A A A B B C C C C D E")
         self.assertEqual(self.iterator.pattern, (3,4,2,1,1))
+        self.iterator.parse_pattern("# 0 2 4 6 8 10 12 14 16 18 20 22")
+        expect = tuple([1 for x in range(12)])
+        self.assertEqual(self.iterator.pattern, expect)
+    
+    def test_pattern_series(self):
+        self.iterator.pattern = None
+        self.assertEqual(self.iterator.pattern_series("foobar"), "foobar")
+        
+        self.iterator.pattern = (2,2,2)
+        ud = range(6)
+        pd = self.iterator.pattern_series(ud)
+        self.assertEqual(pd, [0.5, 2.5, 4.5])
+        
+        self.iterator.pattern = (4,3,2)
+        ud = range(9)
+        ud.reverse()
+        pd = self.iterator.pattern_series(ud)
+        self.assertEqual(pd, [6.5, 3, 0.5])
     
     def tearDown(self):
         pass
