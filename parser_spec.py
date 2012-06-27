@@ -15,10 +15,11 @@ class SeriesIteratorTest(unittest.TestCase):
     def test_iteration(self):
         counter = 0
         for series in self.iterator:
+            self.assertTrue(series[0]) # should be a string
             counter += 1
-            for number in series:
+            for number in series[1]:
                 self.assertIsInstance(number, float)
-            self.assertEqual(counter, len(series))
+            self.assertEqual(counter, len(series[1]))
         else:
             self.assertEqual(counter, 12)
     

@@ -18,7 +18,9 @@ class SeriesIterator:
         if not str:
             raise StopIteration
         words = string.split(str)
-        return map(float, words[1:])
+        series_name = words[0]
+        series_data = map(float, words[1:])
+        return (series_name, series_data)
 
 if __name__ == '__main__':
     print "This is a parser module."
