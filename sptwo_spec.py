@@ -16,6 +16,8 @@ class MockState:
         self.pairs = zip(reversed(range(TEST_N)), range(TEST_N))
     def raise_temp(self, temp):
         self.temps_count += 1
+    def cleanup(self):
+        pass
 
 class StablePersistenceTest(unittest.TestCase):
     
@@ -53,7 +55,7 @@ class MockInterval:
         self.birth = birth
         self.left = left
         self.right = right
-    def adjacent_to(self, value):
+    def is_adjacent_to(self, value):
         return abs(self.left - value) == 1 or abs(self.right - value) == 1
     def assimilate(self, value):
         if abs(self.left - value) == 1:
@@ -113,6 +115,16 @@ class StateTest(unittest.TestCase):
     
     def setUp(self):
         self.state = SP.State(MockRing())
+    
+    def test_cleanup(self):
+        self.state.intervals.append(MockInterval(0, 1, 1))
+        self.assertEqual(len(self.state.intervals), 1)
+        self.assertEqual(self.state.pairs, [])
+        self.state.temp = 1.0 # raised temp to 1.0
+        self.state.cleanup()
+        self.assertEqual(len(self.state.pairs), 1)
+        self.assertEqual(self.state.intervals, [])
+        self.assertEqual(self.state.pairs[0], (0,1))
         
     def test_create_interval(self):
         new_interval = self.state.create_interval(101)

@@ -49,18 +49,22 @@ class State:
         self.ring = ring
         self.intervals = []
         self.pairs = []
+        self.temp = None
     
     def cleanup(self):
+        # This should only be called at the end of the run.
         ints = self.intervals
-        if len(ints) == 1:
+        if ints and len(ints) == 1 and self.temp == 1.0:
             if ints[0].birth == 0 and max(ints[0].values) == 1:
+                self.intervals = []
                 self.pairs.append( (0,1) )
             else:
-                raise Exception("algorithm runtime invariant violated")
+                raise Exception("algorithm invariant violated")
         else:
-            raise Exception("algorithm termination invariant violated")
+            pass
     
     def raise_temp(self, temp):
+        self.temp = temp
         includes = []
         
         for interval in self.intervals:
