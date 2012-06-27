@@ -1,18 +1,29 @@
 #!/usr/bin/python
 
+def test_statistic_score(raw_data):
+    norms = normalized(raw_data)
+    ring = Ring(norms)
+    test = StablePersistence(ring)
+    test.run()
+    return test.score()
+
 # Stable Persistence classes
 
 class StablePersistence:
     
-    def __init__(self, ring, state):
+    def __init__(self, ring, state=None):
         self.temps = sorted(ring.data)
-        self.state = state
+        if not state:
+            self.state = State(ring)
+        else:
+            self.state = state
         self.steps = len(self.temps)
     
     def run(self):
         while True:
             if not self._step():
                 break
+        self.state.cleanup()
         return
     
     def _step(self):
@@ -39,12 +50,22 @@ class State:
         self.intervals = []
         self.pairs = []
     
+    def cleanup(self):
+        ints = self.intervals
+        if len(ints) == 1:
+            if ints[0].birth == 0 and max(ints[0].values) == 1:
+                self.pairs.append( (0,1) )
+            else:
+                raise Exception("algorithm runtime invariant violated")
+        else:
+            raise Exception("algorithm termination invariant violated")
+    
     def raise_temp(self, temp):
         includes = []
         
         for interval in self.intervals:
             # growth
-            if interval.adjacent_to(temp):
+            if interval.is_adjacent_to(temp):
                 interval.assimilate(temp)
                 includes.append(interval)
             else:
