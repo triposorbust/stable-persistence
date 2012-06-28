@@ -8,4 +8,4 @@ do
     ./main.py $f > "$f.results"
 done
 
-mv ./data/*.results ./results/n100/
+mv ./data/*.results ./results/
