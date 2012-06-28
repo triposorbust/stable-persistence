@@ -35,7 +35,8 @@ class SeriesIterator:
         for n in self.pattern:
             values = filter(lambda x: x or x == 0, unpatterned[0:n])
             del unpatterned[0:n]
-            patterned.append(float(sum(values)) / float(len(values)))
+            if values:
+               patterned.append(float(sum(values)) / float(len(values)))
         return patterned
     
     def transform_string(self, string):
