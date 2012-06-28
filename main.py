@@ -27,7 +27,11 @@ def main(filename):
     
     for series in parsed:
         name = series[0]
-        score = SP.test_statistic_score(series[1])
+        data = series[1]
+        if len(set(data[:])) < len(data): # sp does not handle duplicates.
+            continue
+        
+        score = SP.test_statistic_score(data)
         n = len(filter(lambda x: x <= score, null_distribution))
         print "%s\t%s\t%s" % (name, str(score), str(float(n)/float(N)))
 
