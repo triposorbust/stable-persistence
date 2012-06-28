@@ -8,7 +8,7 @@ import parser as P
 import gaussian as G
 import sptwo as SP
 
-TEST_N = 100
+TEST_N = 10000
 TEST_L = 12
 P_VALUE = 0.01
 
