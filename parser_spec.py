@@ -30,6 +30,11 @@ class SeriesIteratorTest(unittest.TestCase):
         expect = tuple([1 for x in range(12)])
         self.assertEqual(self.iterator.pattern, expect)
     
+    def test_transform_string(self):
+        self.assertEqual(self.iterator.transform_string("3.3"), 3.3)
+        self.assertEqual(self.iterator.transform_string("NA"), None)
+        self.assertEqual(self.iterator.transform_string("-1"), -1.0)
+    
     def test_pattern_series(self):
         self.iterator.pattern = None
         self.assertEqual(self.iterator.pattern_series("foobar"), "foobar")
@@ -44,6 +49,16 @@ class SeriesIteratorTest(unittest.TestCase):
         ud.reverse()
         pd = self.iterator.pattern_series(ud)
         self.assertEqual(pd, [6.5, 3, 0.5])
+
+        self.iterator.pattern = None
+        ud = [1, None]
+        pd = self.iterator.pattern_series(ud)
+        self.assertEqual(pd, [1])
+        
+        self.iterator.pattern = (2,2)
+        ud = [1,None,2,3]
+        pd = self.iterator.pattern_series(ud)
+        self.assertEqual(pd, [1, 2.5])
     
     def tearDown(self):
         pass
