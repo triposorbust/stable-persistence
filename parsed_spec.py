@@ -3,10 +3,10 @@
 import os.path
 import sys
 sys.path.append(os.path.dirname(__file__))
-import parser as P
+import parsed as P
 import unittest
 
-TEST_FILENAME = "parser.spec"
+TEST_FILENAME = "parsed.spec"
 
 class AcceptanceTest(unittest.TestCase):
     def setUp(self):

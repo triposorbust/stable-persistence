@@ -4,7 +4,7 @@ import sys
 import os.path
 sys.path.append(os.path.dirname(__file__))
 
-import parser as P
+import parsed as P
 import gaussian as G
 import sptwo as SP
 
