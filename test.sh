@@ -2,7 +2,7 @@
 
 shopt -s nullglob
 
-for f in ./data/*.data
+for f in ./data/gss*.data
 do
     # echo "processing $f file..."
     ./main.py $f # > "$f.results"

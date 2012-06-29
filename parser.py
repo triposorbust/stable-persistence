@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import string
-import sys
+import re
 
 class SeriesIterator:
     def __init__(self, filename="default.data"):
@@ -14,47 +14,60 @@ class SeriesIterator:
             raise e
     
     def parse_pattern(self, pattern_string):
-        pattern = string.split(pattern_string)
-        if (not pattern) or (pattern[0] != "#"):
-            raise Exception("unexpected data format")
-        uniques = list(set(pattern[1:]))
-        
-        # assume that all replicates are blocked.
-        counts = map(lambda x: pattern.count(x), uniques)
-        self.pattern = tuple(counts)
-    
-    def __iter__(self):
-        return self
+        zstrs = string.split(pattern_string)
+        if (not zstrs) or (zstrs[0] != "#"):
+            raise Exception("unexpected data format")        
+        self.pattern = tuple(map(self.zstr_to_t, zstrs[1:]))
     
     def pattern_series(self, unpatterned):
         if not self.pattern:
-            return filter(lambda x: x or x == 0, unpatterned)
-        elif len(unpatterned) != sum(self.pattern):
-            raise Exception("poorly patterned data series")
-        patterned = []
-        for n in self.pattern:
-            values = filter(lambda x: x or x == 0, unpatterned[0:n])
-            del unpatterned[0:n]
-            if values:
-               patterned.append(float(sum(values)) / float(len(values)))
-        return patterned
+            return filter(lambda x: x != None, unpatterned)
+        
+        ts = list(set(filter(lambda x: x or x == 0, list(self.pattern))))
+        td = dict(zip(ts, [[] for x in ts]))
+        
+        for i,n in enumerate(unpatterned):
+            time = self.pattern[i]
+            if n != None and time in td.keys():
+                td[time].append(n)
+            continue
+        
+        times = sorted(td.keys())
+        bundles = filter(lambda x: x!=[], map(lambda t: td[t], times))
+        averages = map(lambda vs: sum(vs)/len(vs), bundles)
+        
+        return averages
     
-    def transform_string(self, string):
+    def zstr_to_t(self, word):
+        m = re.search(r"[\d]{1,2}$",word)
+        if not m:
+            return None
+        return int(m.group())
+    
+    def vstr_to_v(self, string):
         try:
             return float(string)
         except ValueError:
             return None
     
-    def next(self):
-        str = self._file.readline()
-        if not str:
-            raise StopIteration
-        words = string.split(str)
-        unpatterned = map(self.transform_string, words[1:])
+    
+    def __iter__(self):
+        return self
         
-        series_name = words[0]
-        series_data = self.pattern_series(unpatterned)
-        return (series_name, series_data)
+    def next(self):
+        astr = self._file.readline()
+        if not astr:
+            raise StopIteration
+        words = string.split(astr)
+        
+        if self.pattern and len(words) - 1 != len(self.pattern):
+            raise Exception("poorly patterned data series")
+
+        unpatterned = map(self.vstr_to_v, words[1:])
+        
+        name = words[0]
+        data = self.pattern_series(unpatterned)
+        return (name, data)
 
 
 if __name__ == '__main__':
