@@ -42,9 +42,9 @@ def main(filename):
         
         score = SP.test_statistic_score(data)
         n = len(filter(lambda x: x <= score, null_distribution))
-        # 
-        # print "%s\t%s\t%s" % (name, str(score), str(float(n)/float(N)))
-        # 
+        
+        print "%s\t%s\t%s" % (name, str(score), str(float(n)/float(N)))
+        
         total += 1
         if float(n)/float(N) < P_VALUE:
             significant += 1
