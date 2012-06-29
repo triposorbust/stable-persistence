@@ -34,14 +34,17 @@ def main(filename):
         
         name = series[0]
         data = series[1]
+        
+        if len(data) <= 1:
+            continue
         if len(set(data[:])) < len(data): # sp does not handle duplicates.
             continue
         
         score = SP.test_statistic_score(data)
         n = len(filter(lambda x: x <= score, null_distribution))
-        #
-        # print "%s\t%s\t%s" % (name, str(score), str(float(n)/float(N)))
-        #
+        
+        print "%s\t%s\t%s" % (name, str(score), str(float(n)/float(N)))
+        
         total += 1
         if float(n)/float(N) < P_VALUE:
             significant += 1
