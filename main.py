@@ -8,7 +8,7 @@ import parser as P
 import gaussian as G
 import sptwo as SP
 
-TEST_N = 10000
+TEST_N = 1000
 TEST_L = 12
 P_VALUE = 0.01
 
@@ -42,9 +42,9 @@ def main(filename):
         
         score = SP.test_statistic_score(data)
         n = len(filter(lambda x: x <= score, null_distribution))
-        
-        print "%s\t%s\t%s" % (name, str(score), str(float(n)/float(N)))
-        
+        # 
+        # print "%s\t%s\t%s" % (name, str(score), str(float(n)/float(N)))
+        # 
         total += 1
         if float(n)/float(N) < P_VALUE:
             significant += 1
@@ -52,7 +52,7 @@ def main(filename):
         # END ITERATION
         
     fraction = float(significant)/float(total)
-    print "%s\tN=%d\tP=%.3f\t%f" % (filename, TEST_N, P_VALUE, fraction)
+    print "%s\tP=%.3f\t%d\t%f" % (filename, P_VALUE, significant, fraction)
 
     return
 
