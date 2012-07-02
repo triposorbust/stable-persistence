@@ -1,6 +1,5 @@
 *~
 *.pyc
-*.data
 *.results
 *.xlsx
 .DS_Store
