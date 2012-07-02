@@ -2,7 +2,7 @@
 
 import os.path
 import sys
-sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.relpath("../src", os.path.dirname(__file__)))
 import parsed as P
 import unittest
 
