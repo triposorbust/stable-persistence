@@ -11,6 +11,6 @@ To run this script against a different data set, simply run:
 
 `sad-panda:stable-persistence t2ahc$ ./main.py custom.data`
 
-For more information on the algorithm: ["Lipschitz Functions Have Lp-stable Persistence"](ftp://ftp-sop.inria.fr/geometrica/dcohen/Papers/lpstab.pdf) and ["Topological Persistence and Simplification"](http://www.springerlink.com/content/j10w0wjj2k9q1fpk/).
+For more information on the algorithm: ["Lipschitz Functions Have Lp-stable Persistence"](http://www.springerlink.com/content/06k32v77356241nm/) and ["Topological Persistence and Simplification"](http://www.springerlink.com/content/j10w0wjj2k9q1fpk/).
 
 Good luck!
