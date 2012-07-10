@@ -8,7 +8,7 @@ import parsed as P
 import gaussian as G
 import sptwo as SP
 
-TEST_N = 1000
+TEST_N = 10000
 P_VALUE = 0.01
 AVERAGED = False
 
