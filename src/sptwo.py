@@ -229,7 +229,7 @@ def normalized(data):
 def ranked(data):
     ix = range(len(data))
     ix.sort(key = lambda j: data[j])
-    return [i+1 for i in ix]
+    return [ix.index(i)+1 for i in range(len(data))]
 
 
 if __name__ == "__main__":
