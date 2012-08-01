@@ -27,7 +27,7 @@ def main(filename):
         null_distribution.append(score)
     else:
         null_distribution.sort()
-    
+
     N = TEST_N
     n = 0
     
@@ -40,7 +40,7 @@ def main(filename):
         name = series[0]
         data = series[1]
         
-        if (len(data) <= 1) or (len(set(data[:])) < len(data)):
+        if (len(data) <= 1):
             continue
         
         score = SP.test_statistic_score(data)

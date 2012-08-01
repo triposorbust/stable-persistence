@@ -227,8 +227,9 @@ def normalized(data):
     return map(lambda x: float(x-1)/float(count-1), ranks)
 
 def ranked(data):
-    sorts = sorted(data)
-    return map(lambda x: sorts.index(x) + 1, data)
+    ix = range(len(data))
+    ix.sort(key = lambda j: x[j])
+    return ix
 
 
 if __name__ == "__main__":
